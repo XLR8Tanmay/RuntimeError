@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+form{
+ text-align:center;
+}
+</style>
+
+</head>
+<body>
+<br>
+<br>
+<br>
+<form action="{{url_for('main')}}" method="post">
+<center>Submit your Feedback</center>
+
+<textarea name="name" rows="6" cols="50"></textarea>
+<br>
+<br>
+
+
+
+<!--PH NUMBER: <input style="margin-left:14px;" type="text" required=required name=number> -->
+<br>
+<br>
+USER ID: <input style="margin-left:50px;" type="text" required=required name=marks>
+<br>
+<br>
+<input type="submit">
+
+</form>
+
+<br>
+<br>
+<center>{{pre}}</center>
+
+
+
+</body>
+
+
+
+
+
+
+</html>
