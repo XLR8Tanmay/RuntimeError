@@ -11,7 +11,7 @@ var user_name="";
 app.post("/dialogflow", express.json(), (req,res) => {
     const agent = new WebhookClient({ request: req, response: res});
 
-async function identify_user(agent)
+async function identify_user(agent) //Done
 {
     const acNumber=agent.parameters.acNumber;
     const client=new MongoClient(url);
@@ -54,7 +54,7 @@ async function getItemDetails(agent)
         await agent.add("Price of "+product_name+" is "+product_price);
     }
 }
-function report_issue(agent)
+function report_issue(agent) //Done
 {
     var issue_values={1:"Order Delayed",2:"Damaged Product",3:"Refund Status",4:"Other"};
     const intent_val=agent.parameters.issue_number;
@@ -84,11 +84,12 @@ function report_issue(agent)
             db.close();
         })
     });
-    agent.add("The issue reported is: "+val+"\n"+"The ticket number is: "+trouble_ticket);
-    agent.add("Your issue will be resolved as soon as possible!\n Thanks for choosing Archeus!!");
+    agent.add("The issue reported is: "+val+"\n"+"The ticket number is: "+trouble_ticket+". Please save this number for future reference.");
+    agent.add("Your issue will be resolved as soon as possible!\n Thanks for choosing Athena!!");
+    agent.add("Your feedback is valuable to us : https://sentiment-analyzer-for-product.herokuapp.com/")
 }
 
-async function problem_status(agent)
+async function ticket_status(agent) //Done
 {
     const trouble_ticket=agent.parameters.trouble_ticket;
     const client=new MongoClient(url);
@@ -104,7 +105,7 @@ async function problem_status(agent)
     }
 }
 
-function custom_payload(agent)
+function custom_payload(agent) //Done
 {
     var payLoadData={"richContent":[[
     {
@@ -122,7 +123,7 @@ function custom_payload(agent)
         "type":"divider"
     },
     {
-        "type":"list","title":"Refund Status","subtitle":"Press 3 for getting your refund related queries",
+        "type":"list","title":"Refund Related Issue","subtitle":"Press 3 for getting your refund related queries",
         "event":{"name":"","languageCode":"","parameters":{}}
     },
     {
@@ -138,12 +139,12 @@ agent.add(new Payload(agent.UNSPECIFIED,payLoadData,{sendAsMessage:true,rawPaylo
 }
 
 var intentMap=new Map();
-intentMap.set("service_intent", identify_user);
-intentMap.set("service_intent-Issue-IssueNumber", report_issue);
-intentMap.set("service_intent-Issue", custom_payload);
-intentMap.set("service_intent-Ticket-TicketStatus",problem_status);
-intentMap.set("service_intent-getProductDetails", getItemDetails);
-intentMap.set("service_intent-buyItem", buyItemHandler);
+intentMap.set("service_intent", identify_user); //Done
+intentMap.set("service_intent-Issue", custom_payload); //Done
+intentMap.set("service_intent-Issue-IssueNumber", report_issue); //Done
+intentMap.set("service_intent-TicketStatus-TicketNumber",ticket_status); //Done
+intentMap.set("service_intent-getProductDetails-ItemPrice", getItemDetails);
+intentMap.set("service_intent-buyItem-ItemName", buyItemHandler);
 
 agent.handleRequest(intentMap);
 });
