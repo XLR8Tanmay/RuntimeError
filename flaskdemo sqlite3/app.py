@@ -25,22 +25,12 @@ def phnbook():
     data=[name]
     vect=cv.transform(data).toarray()
     rating=clf.predict(vect)
-    connection=sqlite3.connect(currrentdir + "\demodb.db")
+    connection=sqlite3.connect("demodb.db")
     cursor=connection.cursor()
     query="INSERT INTO demodb VALUES('{n}','{m}','{l}')".format(n=name,m=rating[0],l=marks)
     cursor.execute(query)
     connection.commit()
-    return render_template("home.html",pre="FEEDBACK SUBMITTED")
-
-
-
-
-
-
-
-
-
-
+    return render_template("home.html",pre="The rating for the product is" +" "+ str(rating[0]))
 
 if __name__ =="__main__":
     app.run(debug=True)
